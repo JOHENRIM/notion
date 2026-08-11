@@ -286,7 +286,7 @@ function badge(slide, x, y, d, label, color) {
     ["Miyoni", "리얼리즘 동물"],
     ["Eco Nation", "친환경 · 재생소재"],
     ["ebba", "베이비 센서리"],
-    ["YooHoo", "캐릭터 IP"],
+    ["Flopsie", "클래식 봉제"],
   ];
   const comp = [
     ["Jellycat", "감성 · 프리미엄"],
