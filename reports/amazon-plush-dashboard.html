@@ -1,0 +1,844 @@
+<title>Amazon 봉제완구 랭킹 교차분석 대시보드 — 오로라 상품기획</title>
+<style>
+  :root {
+    --ground: #FFFFFF;
+    --surface: #FAF7F7;
+    --surface-2: #F4EFEF;
+    --line: #E7DFDF;
+    --line-strong: #D2C6C6;
+    --ink: #1A1516;
+    --ink-2: #4A4243;
+    --muted: #7C7273;
+    --red: #DC2626;
+    --red-deep: #991B1B;
+    --red-wash: #FDF2F2;
+    --navy: #1E3A8A;
+    --navy-wash: #F1F4FC;
+    --shadow: 0 1px 2px rgba(26, 21, 22, .05);
+
+    --sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+            "Malgun Gothic", "맑은 고딕", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #141011;
+      --surface: #1B1617;
+      --surface-2: #241E1F;
+      --line: #2F2728;
+      --line-strong: #443A3B;
+      --ink: #F3EEEE;
+      --ink-2: #C9C0C1;
+      --muted: #948A8B;
+      --red: #F26661;
+      --red-deep: #F89B96;
+      --red-wash: #2A1A1A;
+      --navy: #8FADF7;
+      --navy-wash: #1A1F30;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #141011;
+    --surface: #1B1617;
+    --surface-2: #241E1F;
+    --line: #2F2728;
+    --line-strong: #443A3B;
+    --ink: #F3EEEE;
+    --ink-2: #C9C0C1;
+    --muted: #948A8B;
+    --red: #F26661;
+    --red-deep: #F89B96;
+    --red-wash: #2A1A1A;
+    --navy: #8FADF7;
+    --navy-wash: #1A1F30;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 28px 96px;
+  }
+
+  a { color: inherit; }
+  a:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(30px, 4.6vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -.025em;
+    font-weight: 800;
+    margin: 0;
+    color: var(--red);
+    text-wrap: balance;
+  }
+  .deck-sub {
+    margin: 12px 0 0;
+    font-size: 17px;
+    color: var(--ink-2);
+    max-width: 46ch;
+  }
+  .stamp {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.9;
+    color: var(--muted);
+    text-align: right;
+    letter-spacing: .02em;
+    white-space: nowrap;
+  }
+  .stamp b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- section scaffold ---------- */
+  section { margin-top: 56px; }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .sec-head h2 {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin: 0;
+  }
+  .sec-head .note {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  /* ---------- live ranking source bar ---------- */
+  .sources {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-top: 28px;
+  }
+  .src {
+    background: var(--surface);
+    padding: 18px 18px 16px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: background .14s ease;
+  }
+  .src:hover { background: var(--red-wash); }
+  .src .tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .src:nth-child(n+3) .tag { color: var(--navy); }
+  .src .tag .go { font-size: 13px; letter-spacing: 0; }
+  .src .name { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+  .src .role { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+  /* ---------- KPI strip ---------- */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    margin-top: 30px;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .kpi .k-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .kpi .k-val {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .kpi .k-val.accent { color: var(--red); }
+  .kpi .k-foot { font-size: 13px; color: var(--muted); margin-top: 5px; }
+
+  /* ---------- priority board ---------- */
+  .scroller { overflow-x: auto; }
+  table.board {
+    width: 100%;
+    min-width: 860px;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .board thead th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+    padding: 0 14px 10px;
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+  }
+  .board tbody tr { border-bottom: 1px solid var(--line); }
+  .board tbody tr:hover { background: var(--surface); }
+  .board td { padding: 16px 14px; vertical-align: top; }
+
+  td.rk {
+    width: 54px;
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    padding-top: 15px;
+  }
+  tr.tier-now td.rk { color: var(--red); }
+
+  .item-name { font-size: 17.5px; font-weight: 700; letter-spacing: -.015em; }
+  .item-why { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill.now { color: var(--red); background: var(--red-wash); }
+  .pill.next { color: var(--navy); background: var(--navy-wash); }
+
+  .evd { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border: 1px solid var(--line-strong);
+    text-decoration: none;
+    color: var(--ink-2);
+    white-space: nowrap;
+    transition: border-color .14s ease, color .14s ease;
+  }
+  .chip:hover { border-color: var(--red); color: var(--red); }
+  .chip::after { content: " ↗"; letter-spacing: 0; opacity: .55; }
+
+  .brandcell { font-size: 14px; color: var(--ink-2); }
+  .brandcell b { font-weight: 700; color: var(--ink); }
+
+  /* ---------- cross matrix ---------- */
+  table.matrix {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .matrix th, .matrix td {
+    border: 1px solid var(--line);
+    padding: 12px 13px;
+    vertical-align: top;
+    text-align: left;
+  }
+  .matrix thead th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: 600;
+    background: var(--surface);
+    white-space: nowrap;
+  }
+  .matrix tbody th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: 600;
+    background: var(--surface);
+    white-space: nowrap;
+    width: 132px;
+  }
+  .matrix td.self {
+    background: var(--surface-2);
+    color: var(--ink-2);
+  }
+  .matrix td.self .lab {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .matrix td.hit { background: var(--red-wash); }
+  .matrix td.hit strong { color: var(--red); }
+  .matrix td strong { display: block; font-size: 14.5px; margin-bottom: 3px; letter-spacing: -.01em; }
+  .matrix td span { color: var(--muted); font-size: 13px; }
+  .matrix td.mirror { background: repeating-linear-gradient(135deg, transparent, transparent 7px, var(--line) 7px, var(--line) 8px); }
+
+  /* ---------- two-column blocks ---------- */
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .col { background: var(--ground); padding: 24px 26px 28px; }
+  .col h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    letter-spacing: -.01em;
+  }
+  .col.own h3 { color: var(--navy); }
+  .col.rival h3 { color: var(--red); }
+  .col .col-note { font-size: 13px; color: var(--muted); margin: 0 0 16px; }
+  .brandlist { list-style: none; margin: 0; padding: 0; }
+  .brandlist li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+  }
+  .brandlist li:first-child { border-top: 0; }
+  .brandlist .bn { font-weight: 700; font-size: 15.5px; }
+  .brandlist .bc { font-size: 13px; color: var(--muted); text-align: right; }
+
+  /* ---------- market ---------- */
+  .market {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .bars { display: flex; flex-direction: column; gap: 16px; }
+  .bar-row { display: grid; grid-template-columns: 62px 1fr; align-items: center; gap: 14px; }
+  .bar-yr {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .bar-track { display: flex; align-items: center; gap: 10px; }
+  .bar-fill { height: 26px; background: var(--navy); }
+  .bar-row.now .bar-fill { background: var(--red); }
+  .bar-val {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .market-read { font-size: 15.5px; color: var(--ink-2); }
+  .market-read p { margin: 0 0 12px; }
+  .market-read .big {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: -.02em;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ---------- ops / conclusion ---------- */
+  .verdict {
+    border: 1px solid var(--red);
+    padding: 26px 30px;
+    font-size: clamp(18px, 2.2vw, 23px);
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--red);
+    letter-spacing: -.015em;
+    text-wrap: balance;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 22px;
+  }
+  .step { border-top: 2px solid var(--ink); padding-top: 14px; }
+  .step .s-no {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: var(--red);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .step .s-t { font-size: 16.5px; font-weight: 700; letter-spacing: -.01em; }
+  .step .s-d { font-size: 13.5px; color: var(--muted); margin-top: 4px; }
+
+  .caveat {
+    margin-top: 44px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border-left: 3px solid var(--line-strong);
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.75;
+  }
+  .caveat b { color: var(--ink); }
+
+  footer {
+    margin-top: 52px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .04em;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 900px) {
+    .sources { grid-template-columns: repeat(2, 1fr); }
+    .kpis { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .market { grid-template-columns: 1fr; gap: 28px; }
+    .cols { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; gap: 18px; }
+    .stamp { text-align: left; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 28px 18px 72px; }
+    .sources { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Aurora World · Product Planning</p>
+      <h1>Amazon 봉제완구 랭킹<br>교차분석 대시보드</h1>
+      <p class="deck-sub">지금 팔리는 상품이 아니라, 앞으로 팔릴 상품을 찾는다. 4개 공식 랭킹이 겹치는 지점에서 개발 우선순위를 뽑았다.</p>
+    </div>
+    <div class="stamp">
+      데이터 기준일 <b>2026. 08. 11.</b><br>
+      카테고리 <b>Toys &amp; Games ›<br>Stuffed Animals &amp; Plush Toys</b><br>
+      브라우즈 노드 <b>166461011</b><br>
+      작성 <b>상품기획팀</b>
+    </div>
+  </header>
+
+  <!-- ============ LIVE SOURCES ============ -->
+  <nav class="sources" aria-label="Amazon 공식 랭킹 페이지 바로가기">
+    <a class="src" href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Plush-Toys/zgbs/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">
+      <span class="tag">Best Sellers <span class="go">열기 ↗</span></span>
+      <span class="name">현재 판매 검증</span>
+      <span class="role">지금 실제로 팔리는 상품 · 수시 갱신</span>
+    </a>
+    <a class="src" href="https://www.amazon.com/gp/movers-and-shakers/toys-and-games" target="_blank" rel="noopener noreferrer">
+      <span class="tag">Movers &amp; Shakers <span class="go">열기 ↗</span></span>
+      <span class="name">단기 바이럴</span>
+      <span class="role">최근 24시간 순위 상승폭 · Toys &amp; Games 전체</span>
+    </a>
+    <a class="src" href="https://www.amazon.com/gp/new-releases/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">
+      <span class="tag">New Releases <span class="go">열기 ↗</span></span>
+      <span class="name">신상품 초기 반응</span>
+      <span class="role">출시·출시예정 신상품 중 판매 반응</span>
+    </a>
+    <a class="src" href="https://www.amazon.com/gp/most-wished-for/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">
+      <span class="tag">Most Wished For <span class="go">열기 ↗</span></span>
+      <span class="name">미래 구매 욕망</span>
+      <span class="role">위시리스트·레지스트리 저장 최다</span>
+    </a>
+  </nav>
+
+  <!-- ============ KPI ============ -->
+  <div class="kpis">
+    <div class="kpi">
+      <span class="k-label">즉시 착수</span>
+      <span class="k-val accent">3건</span>
+      <span class="k-foot">2026 하반기 선행 개발</span>
+    </div>
+    <div class="kpi">
+      <span class="k-label">후속 검토</span>
+      <span class="k-val">5건</span>
+      <span class="k-foot">2027 라인업 검토</span>
+    </div>
+    <div class="kpi">
+      <span class="k-label">시장 규모 2033(E)</span>
+      <span class="k-val">$25.9<span style="font-size:18px">B</span></span>
+      <span class="k-foot">2025년 $13.7B 대비</span>
+    </div>
+    <div class="kpi">
+      <span class="k-label">연평균 성장률</span>
+      <span class="k-val accent">8.3%</span>
+      <span class="k-foot">2025 → 2033 CAGR</span>
+    </div>
+  </div>
+
+  <!-- ============ PRIORITY BOARD ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>개발 우선순위</h2>
+      <span class="note">근거 지표 칩을 누르면 해당 Amazon 랭킹·카테고리 페이지가 열립니다</span>
+    </div>
+    <div class="scroller">
+      <table class="board">
+        <thead>
+          <tr>
+            <th>순위</th>
+            <th>개발 방향</th>
+            <th>판정</th>
+            <th>근거 지표 · 확인 페이지</th>
+            <th>오로라 연결</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tier-now">
+            <td class="rk">01</td>
+            <td>
+              <div class="item-name">4~6인치 미니 플러시 백참 · 클립온</div>
+              <div class="item-why">착용형 수집 트렌드 — 완구가 아니라 자기표현 아이템</div>
+            </td>
+            <td><span class="pill now">즉시 착수</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/gp/most-wished-for/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Wished</a>
+                <a class="chip" href="https://www.amazon.com/gp/new-releases/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">New</a>
+                <a class="chip" href="https://us.amazon.com/gp/most-wished-for/toys-and-games/19431295011" target="_blank" rel="noopener noreferrer">Plush Purses</a>
+                <a class="chip" href="https://www.amazon.com/s?k=plush+keychain+bag+charm&amp;rh=n%3A166461011" target="_blank" rel="noopener noreferrer">검색: bag charm</a>
+              </div>
+            </td>
+            <td class="brandcell"><b>Palm Pals</b> 확장 · 키링화</td>
+          </tr>
+
+          <tr class="tier-now">
+            <td class="rk">02</td>
+            <td>
+              <div class="item-name">블라인드박스형 캐릭터 봉제 시리즈</div>
+              <div class="item-why">언박싱·수집 문화 — 시크릿 컬러, 한정판 운영</div>
+            </td>
+            <td><span class="pill now">즉시 착수</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/gp/movers-and-shakers/toys-and-games" target="_blank" rel="noopener noreferrer">Movers</a>
+                <a class="chip" href="https://www.amazon.com/Best-Sellers-Plush-Figure-Toys/zgbs/toys-and-games/11350121011" target="_blank" rel="noopener noreferrer">Plush Figure</a>
+                <a class="chip" href="https://www.amazon.com/s?k=blind+box+plush&amp;rh=n%3A166461011" target="_blank" rel="noopener noreferrer">검색: blind box</a>
+              </div>
+            </td>
+            <td class="brandcell">신규 IP 필요 — 자사 캐릭터 미보유</td>
+          </tr>
+
+          <tr class="tier-now">
+            <td class="rk">03</td>
+            <td>
+              <div class="item-name">온열 · 무게감 · 향기 기능성 plush</div>
+              <div class="item-why">힐링·수면 케어로 확장 — 완구를 넘어선 용도</div>
+            </td>
+            <td><span class="pill now">즉시 착수</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Plush-Toys/zgbs/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Best</a>
+                <a class="chip" href="https://www.amazon.com/s?k=weighted+plush+microwavable&amp;rh=n%3A166461011" target="_blank" rel="noopener noreferrer">검색: weighted</a>
+                <a class="chip" href="https://www.amazon.com/Best-Sellers-Plush-Interactive-Toy-Figures/zgbs/toys-and-games/11350123011" target="_blank" rel="noopener noreferrer">Interactive</a>
+              </div>
+            </td>
+            <td class="brandcell">신규 기능 라인 — 기존 조형 재활용 가능</td>
+          </tr>
+
+          <tr>
+            <td class="rk">04</td>
+            <td>
+              <div class="item-name">어글리 큐트 신규 캐릭터</div>
+              <div class="item-why">키덜트·SNS 바이럴 — 저장률은 높고 구매는 후행</div>
+            </td>
+            <td><span class="pill next">검토</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/gp/most-wished-for/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Wished</a>
+                <a class="chip" href="https://www.amazon.com/s?k=ugly+cute+plush&amp;rh=n%3A166461011" target="_blank" rel="noopener noreferrer">검색: ugly cute</a>
+              </div>
+            </td>
+            <td class="brandcell">신규 캐릭터 개발</td>
+          </tr>
+
+          <tr>
+            <td class="rk">05</td>
+            <td>
+              <div class="item-name">Miyoni · Eco Nation 프리미엄 동물 라인</div>
+              <div class="item-why">기존 강점 + 친환경 포지셔닝 — 자연·동물원·뮤지엄 채널</div>
+            </td>
+            <td><span class="pill next">검토</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Teddy-Bears/zgbs/toys-and-games/11350120011" target="_blank" rel="noopener noreferrer">Teddy Bears</a>
+                <a class="chip" href="https://www.amazon.com/s?k=realistic+animal+plush&amp;rh=n%3A166461011" target="_blank" rel="noopener noreferrer">검색: realistic</a>
+              </div>
+            </td>
+            <td class="brandcell"><b>Miyoni</b> · <b>Eco Nation</b> 고급화</td>
+          </tr>
+
+          <tr>
+            <td class="rk">06</td>
+            <td>
+              <div class="item-name">ebba 베이비 센서리 강화</div>
+              <div class="item-why">출산·육아 선물 수요 — 애착·촉감·소리 요소</div>
+            </td>
+            <td><span class="pill next">검토</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Plush-Toys/zgbs/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Best</a>
+                <a class="chip" href="https://www.amazon.com/gp/most-gifted/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Most Gifted</a>
+                <a class="chip" href="https://www.amazon.com/s?k=baby+sensory+plush&amp;rh=n%3A166461011" target="_blank" rel="noopener noreferrer">검색: sensory</a>
+              </div>
+            </td>
+            <td class="brandcell"><b>ebba</b> 라인 강화</td>
+          </tr>
+
+          <tr>
+            <td class="rk">07</td>
+            <td>
+              <div class="item-name">푸드 · 디저트 · 홈데코 plush</div>
+              <div class="item-why">MZ 팬시·라이프스타일 채널 확장</div>
+            </td>
+            <td><span class="pill next">검토</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/gp/new-releases/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">New</a>
+                <a class="chip" href="https://www.amazon.com/gp/most-wished-for/toys-and-games/2489414011" target="_blank" rel="noopener noreferrer">Plush Pillows</a>
+                <a class="chip" href="https://www.amazon.com/s?k=food+dessert+plush&amp;rh=n%3A166461011" target="_blank" rel="noopener noreferrer">검색: food plush</a>
+              </div>
+            </td>
+            <td class="brandcell">라이프스타일 신규 라인</td>
+          </tr>
+
+          <tr>
+            <td class="rk">08</td>
+            <td>
+              <div class="item-name">외부 IP 미니 plush 협업</div>
+              <div class="item-why">선물·위시리스트 수요 — 산리오·디즈니·게임 IP</div>
+            </td>
+            <td><span class="pill next">검토</span></td>
+            <td>
+              <div class="evd">
+                <a class="chip" href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Plush-Toys/zgbs/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Best</a>
+                <a class="chip" href="https://www.amazon.com/gp/most-wished-for/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Wished</a>
+                <a class="chip" href="https://www.amazon.com/Best-Sellers-Plush-Figure-Toys/zgbs/toys-and-games/11350121011" target="_blank" rel="noopener noreferrer">Plush Figure</a>
+              </div>
+            </td>
+            <td class="brandcell"><b>YooHoo</b> 협업 경험 활용</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ CROSS MATRIX ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>교차 판독 매트릭스</h2>
+      <span class="note">대각선은 해당 지표 단독 신호 · 붉은 칸은 즉시 착수 근거가 나오는 교차점</span>
+    </div>
+    <div class="scroller">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th scope="col">교차</th>
+            <th scope="col">Best Sellers</th>
+            <th scope="col">Movers</th>
+            <th scope="col">New Releases</th>
+            <th scope="col">Most Wished</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Best Sellers</th>
+            <td class="self"><span class="lab">단독</span><strong>검증된 매출</strong><span>이미 경쟁 포화 — 진입 시 차별화 필수</span></td>
+            <td><strong>일시 급등 재확인</strong><span>할인 효과인지 실수요인지 분리</span></td>
+            <td class="hit"><strong>빠른 신상품</strong><span>소재·동물·사이즈로 후속 개발 (03)</span></td>
+            <td class="hit"><strong>안정 SKU</strong><span>기본 라인업화, 재고 확대</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Movers</th>
+            <td class="mirror"></td>
+            <td class="self"><span class="lab">단독</span><strong>일시적 프로모션</strong><span>대량 개발 보류 — 관찰만</span></td>
+            <td><strong>런칭 스파이크</strong><span>초기 마케팅 물량 가능성 확인</span></td>
+            <td class="hit"><strong>바이럴 + 잠재수요</strong><span>블라인드박스·숏폼 테스트 상품 (02)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">New Releases</th>
+            <td class="mirror"></td>
+            <td class="mirror"></td>
+            <td class="self"><span class="lab">단독</span><strong>신상품 초기 반응</strong><span>판매 지속성 미검증</span></td>
+            <td class="hit"><strong>선행 기획 후보</strong><span>6~12개월 후 본격화 — 미니·백참 (01)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Most Wished</th>
+            <td class="mirror"></td>
+            <td class="mirror"></td>
+            <td class="mirror"></td>
+            <td class="self"><span class="lab">단독</span><strong>구매 전환 장벽</strong><span>가격·재고 문제 → 프리미엄 선물형 여지</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ BRANDS ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>브랜드 분류</h2>
+      <span class="note">기존 자료에서 혼용되던 자사·경쟁 브랜드를 분리했습니다</span>
+    </div>
+    <div class="cols">
+      <div class="col own">
+        <h3>오로라월드 자사 브랜드</h3>
+        <p class="col-note">우선순위 매핑의 기준이 되는 보유 자산</p>
+        <ul class="brandlist">
+          <li><span class="bn">Palm Pals</span><span class="bc">미니 · 백참 — 01순위 기반</span></li>
+          <li><span class="bn">Miyoni</span><span class="bc">리얼리즘 동물 — 05순위 기반</span></li>
+          <li><span class="bn">Eco Nation</span><span class="bc">친환경 · 재생소재</span></li>
+          <li><span class="bn">ebba</span><span class="bc">베이비 센서리 — 06순위 기반</span></li>
+          <li><span class="bn">YooHoo</span><span class="bc">캐릭터 IP · 협업 경험</span></li>
+        </ul>
+      </div>
+      <div class="col rival">
+        <h3>벤치마크 · 경쟁 브랜드</h3>
+        <p class="col-note">오로라 브랜드가 아님 — 랭킹 관찰 대상</p>
+        <ul class="brandlist">
+          <li><span class="bn">Jellycat</span><span class="bc">감성 · 프리미엄</span></li>
+          <li><span class="bn">Squishmallows</span><span class="bc">수집 · 대형 IP</span></li>
+          <li><span class="bn">Douglas</span><span class="bc">리얼리즘 동물</span></li>
+          <li><span class="bn">GUND</span><span class="bc">클래식 · 베이비</span></li>
+          <li><span class="bn">Mary Meyer</span><span class="bc">베이비 센서리</span></li>
+          <li><span class="bn">POP MART</span><span class="bc">블라인드박스</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARKET ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>시장 전망</h2>
+      <span class="note">Grand View Research · Stuffed Animals &amp; Plush Toys Market</span>
+    </div>
+    <div class="market">
+      <div class="bars">
+        <div class="bar-row now">
+          <span class="bar-yr">2025</span>
+          <span class="bar-track"><span class="bar-fill" style="width:52.7%"></span><span class="bar-val">$13.68B</span></span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-yr">2029(E)</span>
+          <span class="bar-track"><span class="bar-fill" style="width:73.2%"></span><span class="bar-val">$19.0B 추정</span></span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-yr">2033(E)</span>
+          <span class="bar-track"><span class="bar-fill" style="width:100%"></span><span class="bar-val">$25.94B</span></span>
+        </div>
+      </div>
+      <div class="market-read">
+        <p><span class="big">성인 컬렉터</span>가 성장 동력이며, 봉제완구가 아동 완구에서 자기표현·감성 소비 아이템으로 이동하고 있습니다.</p>
+        <p>수집 가능하고, 착용 가능하고, 공유 가능한 형태가 유리합니다. 01~03순위가 모두 이 축 위에 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONCLUSION ============ -->
+  <section>
+    <div class="sec-head"><h2>결론 및 실행</h2></div>
+    <p class="verdict">네 지표를 교차하면, 지금 잘 팔리는 봉제완구가 아니라 앞으로 성장할 상품군이 보인다.</p>
+    <div class="steps">
+      <div class="step">
+        <span class="s-no">STEP 01</span>
+        <div class="s-t">랭킹 주 1회 캡처 · 아카이브</div>
+        <div class="s-d">위 4개 링크를 고정 소스로 사용, 조회 일시 병기</div>
+      </div>
+      <div class="step">
+        <span class="s-no">STEP 02</span>
+        <div class="s-t">교차 상위 SKU 리스트업</div>
+        <div class="s-d">경쟁사 · 소재 · 가격대 · 사이즈 분해</div>
+      </div>
+      <div class="step">
+        <span class="s-no">STEP 03</span>
+        <div class="s-t">미니 · 백참 라인 선행 기획</div>
+        <div class="s-d">Palm Pals 기반, 2026 하반기 착수</div>
+      </div>
+    </div>
+
+    <p class="caveat">
+      <b>데이터 해석 주의.</b> 본 대시보드는 <b>2026. 08. 11.</b> 기준으로 정리한 판독 프레임이며, 개별 상품의 1~20위 순위표는 포함하지 않습니다.
+      Amazon Best Sellers Rank는 수시 갱신되고 Movers &amp; Shakers는 최근 24시간을 기준으로 하므로, 접속 시점 · 지역 · 계정 · 재고에 따라 순위가 달라집니다.
+      위 링크는 <b>지금 이 순간의 순위를 직접 확인하는 용도</b>이며, 내부 보고서에 인용할 때는 반드시 조회 일시를 함께 기재하십시오.
+      2029년 시장 규모는 2025년과 2033년 사이를 보간한 추정치입니다.
+    </p>
+  </section>
+
+  <footer>
+    <span>AURORA WORLD · PRODUCT PLANNING</span>
+    <span>AS OF 2026. 08. 11. · NODE 166461011 · US MARKETPLACE</span>
+  </footer>
+
+</div>
