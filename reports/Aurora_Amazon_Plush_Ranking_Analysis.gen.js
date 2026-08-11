@@ -5,7 +5,8 @@ const NAVY = "1E3A8A";
 const INK = "1F2937";
 const GRAY = "6B7280";
 const LINE = "E5E7EB";
-const F = "Malgun Gothic";
+const F = "Pretendard";          // 본문
+const FD = "NEXON Lv1 Gothic";   // 제목 · 헤드라인
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE"; // 13.3 x 7.5
@@ -25,7 +26,7 @@ function pageTitle(slide, text, kicker) {
   }
   slide.addText(text, {
     x: M, y: kicker ? 0.76 : 0.5, w: CW, h: 0.8, margin: 0,
-    fontFace: F, fontSize: 36, bold: true, color: RED, valign: "top",
+    fontFace: FD, fontSize: 36, bold: true, color: RED, valign: "top",
   });
 }
 
@@ -78,7 +79,7 @@ function badge(slide, x, y, d, label, color) {
 
   s.addText("Amazon 봉제완구 랭킹\n4대 지표 교차분석", {
     x: M, y: 1.35, w: CW, h: 1.9, margin: 0,
-    fontFace: F, fontSize: 46, bold: true, color: RED, lineSpacing: 56, valign: "top",
+    fontFace: FD, fontSize: 46, bold: true, color: RED, lineSpacing: 56, valign: "top",
   });
 
   s.addText("지금 팔리는 상품이 아니라, 앞으로 팔릴 상품을 찾는 프레임", {
@@ -178,7 +179,7 @@ function badge(slide, x, y, d, label, color) {
     });
     s.addText(it[1], {
       x: x + 0.32, y: y + 0.5, w: cw - 0.64, h: 0.58, margin: 0,
-      fontFace: F, fontSize: 30, bold: true, color: INK, valign: "middle",
+      fontFace: FD, fontSize: 30, bold: true, color: INK, valign: "middle",
     });
     s.addText(it[2], {
       x: x + 0.32, y: y + 1.1, w: cw - 0.64, h: 0.95, margin: 0,
@@ -302,7 +303,7 @@ function badge(slide, x, y, d, label, color) {
     card(s, x, 1.88, cw, 4.4, color);
     s.addText(head, {
       x: x + 0.3, y: 2.03, w: cw - 0.6, h: 0.52, margin: 0,
-      fontFace: F, fontSize: 27, bold: true, color: color, valign: "middle",
+      fontFace: FD, fontSize: 27, bold: true, color: color, valign: "middle",
     });
     list.forEach((b, i) => {
       const y = 2.66 + i * 0.6;
@@ -440,7 +441,7 @@ function badge(slide, x, y, d, label, color) {
   card(s, M, 1.9, CW, 1.6, RED);
   s.addText("네 지표를 교차하면, 지금 잘 팔리는 봉제완구가 아니라\n앞으로 성장할 상품군이 보인다.", {
     x: M + 0.45, y: 1.9, w: CW - 0.9, h: 1.6, margin: 0,
-    fontFace: F, fontSize: 28, bold: true, color: RED, lineSpacing: 40, valign: "middle",
+    fontFace: FD, fontSize: 28, bold: true, color: RED, lineSpacing: 40, valign: "middle",
   });
 
   const steps = [
