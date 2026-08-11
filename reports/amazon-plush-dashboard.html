@@ -442,6 +442,205 @@
   }
   .caveat b { color: var(--ink); }
 
+  /* ---------- table of contents ---------- */
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 22px;
+    margin-top: 18px;
+    padding-bottom: 4px;
+  }
+  .toc a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+  }
+  .toc a:hover { color: var(--red); border-bottom-color: var(--red); }
+
+  /* ---------- reading manual ---------- */
+  .manual {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .mcard { background: var(--ground); padding: 22px 24px 24px; }
+  .mcard .m-tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .mcard:nth-child(n+3) .m-tag { color: var(--navy); }
+  .mcard h3 { font-size: 19px; font-weight: 800; margin: 0 0 14px; letter-spacing: -.015em; }
+  .mrow { display: grid; grid-template-columns: 76px 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
+  .mrow:first-of-type { border-top: 0; }
+  .mrow dt {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+  .mrow dd { margin: 0; color: var(--ink-2); line-height: 1.6; }
+  .mrow.risk dd { color: var(--red-deep); }
+
+  /* ---------- checklist ---------- */
+  table.checklist {
+    width: 100%;
+    min-width: 820px;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  .checklist thead th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+    padding: 0 14px 10px;
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+  }
+  .checklist td { padding: 13px 14px; vertical-align: top; border-bottom: 1px solid var(--line); }
+  .checklist tbody tr:hover { background: var(--surface); }
+  .checklist .cl-no {
+    width: 40px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    padding-top: 15px;
+  }
+  .checklist .cl-name { font-weight: 700; letter-spacing: -.01em; }
+  .checklist .cl-watch { color: var(--ink-2); }
+  .checklist .cl-apply { color: var(--muted); font-size: 13.5px; }
+
+  /* ---------- worksheet ---------- */
+  details.sheet {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+  }
+  details.sheet > summary {
+    cursor: pointer;
+    padding: 16px 20px;
+    font-weight: 700;
+    font-size: 16px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  details.sheet > summary::-webkit-details-marker { display: none; }
+  details.sheet > summary::after {
+    content: "펼치기 +";
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    color: var(--red);
+    font-weight: 500;
+  }
+  details.sheet[open] > summary::after { content: "접기 −"; }
+  .sheet-body { padding: 4px 20px 22px; background: var(--ground); }
+  .sheet-how {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.75;
+    margin: 16px 0 18px;
+  }
+  table.ws {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .ws th, .ws td { border: 1px solid var(--line); padding: 0; }
+  .ws thead th { background: var(--surface); padding: 10px 12px; text-align: left; }
+  .ws thead th a {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .ws thead th a:hover { color: var(--red); }
+  .ws thead th a::after { content: " ↗"; letter-spacing: 0; opacity: .55; }
+  .ws thead th.wsrk { width: 46px; }
+  .ws td { height: 32px; }
+  .ws td.wsrk {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    text-align: center;
+    background: var(--surface);
+  }
+  .ws tbody tr:nth-child(5n) td { border-bottom-color: var(--line-strong); }
+
+  /* ---------- appendix ---------- */
+  pre.pattern {
+    margin: 0 0 22px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 2;
+    color: var(--ink-2);
+  }
+  pre.pattern b { color: var(--red); font-weight: 600; }
+  table.nodes {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .nodes thead th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+    padding: 0 14px 10px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .nodes td { padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  .nodes tbody tr:hover { background: var(--surface); }
+  .nodes .nd {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .nodes .nlink { text-align: right; }
+  .nodes .nlink a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .nodes .nlink a:hover { color: var(--red); border-bottom-color: var(--red); }
+
   footer {
     margin-top: 52px;
     padding-top: 18px;
@@ -461,6 +660,7 @@
     .kpis { grid-template-columns: repeat(2, 1fr); gap: 22px; }
     .market { grid-template-columns: 1fr; gap: 28px; }
     .cols { grid-template-columns: 1fr; }
+    .manual { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; gap: 18px; }
     .stamp { text-align: left; }
   }
@@ -470,6 +670,17 @@
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
+  }
+
+  @media print {
+    .toc { display: none; }
+    .wrap { max-width: none; padding: 0; }
+    section { break-inside: avoid; margin-top: 30px; }
+    details.sheet { border-color: #999; }
+    details.sheet > summary::after { content: ""; }
+    .ws td { height: 30px; }
+    .scroller { overflow-x: visible; }
+    table.board, table.matrix, table.checklist, table.ws, table.nodes { min-width: 0; }
   }
 </style>
 
@@ -488,6 +699,18 @@
       작성 <b>상품기획팀</b>
     </div>
   </header>
+
+  <nav class="toc" aria-label="목차">
+    <a href="#priority">01 개발 우선순위</a>
+    <a href="#matrix">02 교차 판독</a>
+    <a href="#manual">03 지표 판독 매뉴얼</a>
+    <a href="#watch">04 관찰 체크리스트</a>
+    <a href="#brands">05 브랜드 분류</a>
+    <a href="#market">06 시장 전망</a>
+    <a href="#action">07 결론 · 실행</a>
+    <a href="#sheet">08 수집 워크시트</a>
+    <a href="#appendix">09 부록</a>
+  </nav>
 
   <!-- ============ LIVE SOURCES ============ -->
   <nav class="sources" aria-label="Amazon 공식 랭킹 페이지 바로가기">
@@ -538,7 +761,7 @@
   </div>
 
   <!-- ============ PRIORITY BOARD ============ -->
-  <section>
+  <section id="priority">
     <div class="sec-head">
       <h2>개발 우선순위</h2>
       <span class="note">근거 지표 칩을 누르면 해당 Amazon 랭킹·카테고리 페이지가 열립니다</span>
@@ -695,7 +918,7 @@
   </section>
 
   <!-- ============ CROSS MATRIX ============ -->
-  <section>
+  <section id="matrix">
     <div class="sec-head">
       <h2>교차 판독 매트릭스</h2>
       <span class="note">대각선은 해당 지표 단독 신호 · 붉은 칸은 즉시 착수 근거가 나오는 교차점</span>
@@ -745,8 +968,124 @@
     </div>
   </section>
 
+  <!-- ============ READING MANUAL ============ -->
+  <section id="manual">
+    <div class="sec-head">
+      <h2>지표 판독 매뉴얼</h2>
+      <span class="note">네 지표는 대체재가 아니라 시간축이 다른 신호입니다 — 각각의 함정을 함께 봅니다</span>
+    </div>
+    <div class="manual">
+      <div class="mcard">
+        <span class="m-tag">Best Sellers</span>
+        <h3>현재 판매 검증</h3>
+        <dl>
+          <div class="mrow"><dt>갱신</dt><dd>수시 (시간 단위)</dd></div>
+          <div class="mrow"><dt>읽는 법</dt><dd>상위 100위. 절대 순위보다 <b>몇 주간 자리를 지키는지</b>가 핵심입니다.</dd></div>
+          <div class="mrow risk"><dt>함정</dt><dd>이미 경쟁이 포화된 구간. 차별화 없이 진입하면 개발비가 매몰됩니다.</dd></div>
+        </dl>
+      </div>
+      <div class="mcard">
+        <span class="m-tag">Movers &amp; Shakers</span>
+        <h3>단기 바이럴</h3>
+        <dl>
+          <div class="mrow"><dt>갱신</dt><dd>최근 24시간 기준</dd></div>
+          <div class="mrow"><dt>읽는 법</dt><dd>판매량이 아니라 <b>순위 상승폭</b>입니다. 하위권 상품도 조금만 팔리면 크게 뜁니다.</dd></div>
+          <div class="mrow risk"><dt>함정</dt><dd>쿠폰·타임세일·인플루언서 1회 노출로도 급등합니다. 단독 신호로 개발을 결정하면 안 됩니다.</dd></div>
+        </dl>
+      </div>
+      <div class="mcard">
+        <span class="m-tag">New Releases</span>
+        <h3>신상품 초기 반응</h3>
+        <dl>
+          <div class="mrow"><dt>갱신</dt><dd>수시 · 출시예정 포함</dd></div>
+          <div class="mrow"><dt>읽는 법</dt><dd>신상품이 <b>얼마나 빨리</b> 반응을 얻는지. 경쟁사 신규 라인의 방향을 읽는 창구입니다.</dd></div>
+          <div class="mrow risk"><dt>함정</dt><dd>초기 마케팅 물량과 실수요가 구분되지 않습니다. 4~8주 뒤 Best Sellers 잔존 여부로 재확인해야 합니다.</dd></div>
+        </dl>
+      </div>
+      <div class="mcard">
+        <span class="m-tag">Most Wished For</span>
+        <h3>미래 구매 욕망</h3>
+        <dl>
+          <div class="mrow"><dt>갱신</dt><dd>수시 · 위시리스트/레지스트리</dd></div>
+          <div class="mrow"><dt>읽는 법</dt><dd>가장 선행하는 지표. <b>6~12개월 뒤 팔릴 것</b>의 후보군으로 봅니다.</dd></div>
+          <div class="mrow risk"><dt>함정</dt><dd>저장은 구매가 아닙니다. 고가 상품일수록 저장률이 높아 실제 전환은 낮을 수 있습니다.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WATCH CHECKLIST ============ -->
+  <section id="watch">
+    <div class="sec-head">
+      <h2>성장 상품군 관찰 체크리스트</h2>
+      <span class="note">주간 캡처 시 상품군마다 이 항목을 확인해 우선순위를 갱신합니다</span>
+    </div>
+    <div class="scroller">
+      <table class="checklist">
+        <thead>
+          <tr>
+            <th></th>
+            <th>상품군</th>
+            <th>랭킹에서 확인할 것</th>
+            <th>오로라 적용 방향</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cl-no">01</td>
+            <td class="cl-name">미니 플러시 · 클립온 · 백참</td>
+            <td class="cl-watch">Most Wished와 New Releases에 <b>동시 진입</b>하는지</td>
+            <td class="cl-apply">Palm Pals 외 4~6인치 신규 라인, 키링·백참화</td>
+          </tr>
+          <tr>
+            <td class="cl-no">02</td>
+            <td class="cl-name">블라인드박스형 봉제 굿즈</td>
+            <td class="cl-watch">Movers 급상승이 <b>반복</b>되는지 (1회성 제외)</td>
+            <td class="cl-apply">랜덤 시리즈, 시크릿 컬러, 한정판 운영</td>
+          </tr>
+          <tr>
+            <td class="cl-no">03</td>
+            <td class="cl-name">힐링 · 수면 · 온열 기능성</td>
+            <td class="cl-watch">Best Sellers에 <b>장기 잔존</b>하는지</td>
+            <td class="cl-apply">weighted · microwavable · 라벤더 향 등 기능 부여</td>
+          </tr>
+          <tr>
+            <td class="cl-no">04</td>
+            <td class="cl-name">어글리 큐트 캐릭터</td>
+            <td class="cl-watch">Wished 순위 대비 Best 순위의 <b>격차</b></td>
+            <td class="cl-apply">성인 취향 강화, SNS 바이럴 전제 디자인</td>
+          </tr>
+          <tr>
+            <td class="cl-no">05</td>
+            <td class="cl-name">리얼리즘 동물 plush</td>
+            <td class="cl-watch">Best Sellers 순위의 <b>변동 폭</b>(안정성)</td>
+            <td class="cl-apply">Miyoni · Eco Nation 고급화, 동물원·뮤지엄 채널</td>
+          </tr>
+          <tr>
+            <td class="cl-no">06</td>
+            <td class="cl-name">베이비 센서리 plush</td>
+            <td class="cl-watch">Best Sellers 진입 + <b>리뷰 수·평점</b></td>
+            <td class="cl-apply">ebba 애착·촉감·소리 요소 강화</td>
+          </tr>
+          <tr>
+            <td class="cl-no">07</td>
+            <td class="cl-name">푸드 · 디저트 plush</td>
+            <td class="cl-watch">New Releases 반응 <b>속도</b></td>
+            <td class="cl-apply">MZ 팬시·라이프스타일 굿즈로 확장</td>
+          </tr>
+          <tr>
+            <td class="cl-no">08</td>
+            <td class="cl-name">IP 콜라보 plush</td>
+            <td class="cl-watch">Best와 Wished에 <b>중복 등재</b>되는 IP</td>
+            <td class="cl-apply">산리오·디즈니·게임 IP 벤치마킹, YooHoo 경험 활용</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <!-- ============ BRANDS ============ -->
-  <section>
+  <section id="brands">
     <div class="sec-head">
       <h2>브랜드 분류</h2>
       <span class="note">기존 자료에서 혼용되던 자사·경쟁 브랜드를 분리했습니다</span>
@@ -779,7 +1118,7 @@
   </section>
 
   <!-- ============ MARKET ============ -->
-  <section>
+  <section id="market">
     <div class="sec-head">
       <h2>시장 전망</h2>
       <span class="note">Grand View Research · Stuffed Animals &amp; Plush Toys Market</span>
@@ -807,14 +1146,14 @@
   </section>
 
   <!-- ============ CONCLUSION ============ -->
-  <section>
+  <section id="action">
     <div class="sec-head"><h2>결론 및 실행</h2></div>
     <p class="verdict">네 지표를 교차하면, 지금 잘 팔리는 봉제완구가 아니라 앞으로 성장할 상품군이 보인다.</p>
     <div class="steps">
       <div class="step">
         <span class="s-no">STEP 01</span>
         <div class="s-t">랭킹 주 1회 캡처 · 아카이브</div>
-        <div class="s-d">위 4개 링크를 고정 소스로 사용, 조회 일시 병기</div>
+        <div class="s-d">위 4개 링크를 고정 소스로 사용 — <a href="#sheet">수집 워크시트</a>에 조회 일시와 함께 기록</div>
       </div>
       <div class="step">
         <span class="s-no">STEP 02</span>
@@ -826,6 +1165,127 @@
         <div class="s-t">미니 · 백참 라인 선행 기획</div>
         <div class="s-d">Palm Pals 기반, 2026 하반기 착수</div>
       </div>
+    </div>
+
+  </section>
+
+  <!-- ============ WORKSHEET ============ -->
+  <section id="sheet">
+    <div class="sec-head">
+      <h2>Top 20 수집 워크시트</h2>
+      <span class="note">STEP 01을 실행할 때 쓰는 양식 · 인쇄하거나 스프레드시트로 옮겨 사용</span>
+    </div>
+    <details class="sheet">
+      <summary>주간 캡처 양식 — 4개 랭킹 × 1~20위</summary>
+      <div class="sheet-body">
+        <p class="sheet-how">
+          각 열 머리글이 해당 Amazon 랭킹 페이지로 연결됩니다. 페이지를 열어 <b>1~20위 상품명과 브랜드</b>를 채우고,
+          시트 상단에 <b>조회 일시</b>를 반드시 적으십시오. 같은 상품이 두 개 이상의 열에 나타나면 그 행에 표시해 두었다가
+          <a href="#matrix">교차 판독 매트릭스</a>에 대입합니다 — 교차 등재가 이 작업의 목적입니다.
+          Movers &amp; Shakers만 Toys &amp; Games 전체 기준이므로, 봉제완구 상품만 골라 기록합니다.
+        </p>
+        <div class="scroller">
+          <table class="ws">
+            <thead>
+              <tr>
+                <th class="wsrk">위</th>
+                <th><a href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Plush-Toys/zgbs/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Best Sellers</a></th>
+                <th><a href="https://www.amazon.com/gp/movers-and-shakers/toys-and-games" target="_blank" rel="noopener noreferrer">Movers &amp; Shakers</a></th>
+                <th><a href="https://www.amazon.com/gp/new-releases/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">New Releases</a></th>
+                <th><a href="https://www.amazon.com/gp/most-wished-for/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">Most Wished For</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="wsrk">01</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">02</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">03</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">04</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">05</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">06</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">07</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">08</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">09</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">10</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">11</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">12</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">13</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">14</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">15</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">16</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">17</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">18</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">19</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="wsrk">20</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ APPENDIX ============ -->
+  <section id="appendix">
+    <div class="sec-head">
+      <h2>부록 · 카테고리 노드 맵</h2>
+      <span class="note">노드 번호를 패턴에 넣으면 어떤 하위 카테고리든 4개 랭킹을 열 수 있습니다</span>
+    </div>
+    <pre class="pattern">Best Sellers      https://www.amazon.com/zgbs/toys-and-games/<b>{노드}</b>
+Movers &amp; Shakers  https://www.amazon.com/gp/movers-and-shakers/toys-and-games/<b>{노드}</b>
+New Releases      https://www.amazon.com/gp/new-releases/toys-and-games/<b>{노드}</b>
+Most Wished For   https://www.amazon.com/gp/most-wished-for/toys-and-games/<b>{노드}</b>
+Most Gifted       https://www.amazon.com/gp/most-gifted/toys-and-games/<b>{노드}</b></pre>
+    <div class="scroller">
+      <table class="nodes">
+        <thead>
+          <tr>
+            <th>카테고리</th>
+            <th>브라우즈 노드</th>
+            <th class="nlink">Best Sellers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Stuffed Animals &amp; Plush Toys</b> — 본 보고서 기준</td>
+            <td class="nd">166461011</td>
+            <td class="nlink"><a href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Plush-Toys/zgbs/toys-and-games/166461011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+          <tr>
+            <td>Stuffed Animals &amp; Teddy Bears — 05순위 관찰</td>
+            <td class="nd">11350120011</td>
+            <td class="nlink"><a href="https://www.amazon.com/Best-Sellers-Stuffed-Animals-Teddy-Bears/zgbs/toys-and-games/11350120011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+          <tr>
+            <td>Plush Figure Toys — 02 · 08순위 관찰</td>
+            <td class="nd">11350121011</td>
+            <td class="nlink"><a href="https://www.amazon.com/Best-Sellers-Plush-Figure-Toys/zgbs/toys-and-games/11350121011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+          <tr>
+            <td>Plush Interactive Toy Figures — 03순위 관찰</td>
+            <td class="nd">11350123011</td>
+            <td class="nlink"><a href="https://www.amazon.com/Best-Sellers-Plush-Interactive-Toy-Figures/zgbs/toys-and-games/11350123011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+          <tr>
+            <td>Plush Purses — 01순위 관찰</td>
+            <td class="nd">19431295011</td>
+            <td class="nlink"><a href="https://www.amazon.com/zgbs/toys-and-games/19431295011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+          <tr>
+            <td>Kids' Plush Toy Pillows — 07순위 관찰</td>
+            <td class="nd">2489414011</td>
+            <td class="nlink"><a href="https://www.amazon.com/zgbs/toys-and-games/2489414011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+          <tr>
+            <td>Stuffed Animal Clothing &amp; Accessories</td>
+            <td class="nd">10130802011</td>
+            <td class="nlink"><a href="https://www.amazon.com/zgbs/toys-and-games/10130802011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+          <tr>
+            <td>Puppets &amp; Puppet Theaters</td>
+            <td class="nd">166333011</td>
+            <td class="nlink"><a href="https://www.amazon.com/zgbs/toys-and-games/166333011" target="_blank" rel="noopener noreferrer">열기 ↗</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <p class="caveat">
