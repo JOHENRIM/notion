@@ -29,17 +29,19 @@ function pageTitle(slide, text, kicker) {
   });
 }
 
+const ASOF = "2026. 08. 11.";
+
 function pageNum(slide, n) {
-  slide.addText(String(n), {
-    x: W - M - 0.7, y: H - 0.62, w: 0.7, h: 0.32, margin: 0,
-    fontFace: F, fontSize: 14, color: GRAY, align: "right",
+  slide.addText(`${ASOF} 기준   |   ${n}`, {
+    x: W - M - 2.9, y: H - 0.52, w: 2.9, h: 0.32, margin: 0,
+    fontFace: F, fontSize: 13, color: GRAY, align: "right",
   });
 }
 
 function caption(slide, text) {
   slide.addText(text, {
-    x: M, y: H - 0.66, w: CW - 1.0, h: 0.4, margin: 0,
-    fontFace: F, fontSize: 13, color: GRAY, valign: "top",
+    x: M, y: H - 0.82, w: 8.7, h: 0.7, margin: 0,
+    fontFace: F, fontSize: 13, color: GRAY, lineSpacing: 17, valign: "top",
   });
 }
 
@@ -100,7 +102,7 @@ function badge(slide, x, y, d, label, color) {
     x: M, y: 5.85, w: CW, h: 0.4, margin: 0,
     fontFace: F, fontSize: 20, bold: true, color: INK,
   });
-  s.addText("작성 : 상품기획팀   |   기준일 : 2026. 08. 11.   |   랭킹은 시간·지역에 따라 변동", {
+  s.addText(`작성 : 상품기획팀   |   데이터 기준일 : ${ASOF} (금일 조회 기준)   |   랭킹은 시간·지역에 따라 변동`, {
     x: M, y: 6.3, w: CW, h: 0.4, margin: 0,
     fontFace: F, fontSize: 15, color: GRAY,
   });
@@ -165,7 +167,7 @@ function badge(slide, x, y, d, label, color) {
     ["MOST WISHED FOR", "미래 구매 욕망", "위시리스트·레지스트리\n저장이 가장 많은 상품", NAVY],
   ];
 
-  const cw = (CW - 0.4) / 2, ch = 2.15;
+  const cw = (CW - 0.4) / 2, ch = 2.08;
   items.forEach((it, i) => {
     const x = M + (i % 2) * (cw + 0.4);
     const y = 1.88 + Math.floor(i / 2) * (ch + 0.3);
@@ -252,10 +254,10 @@ function badge(slide, x, y, d, label, color) {
     "외부 IP 콜라보 plush",
   ];
 
-  const cw = (CW - 0.4) / 2, rh = 0.98, gap = 0.2;
+  const cw = (CW - 0.4) / 2, rh = 0.94, gap = 0.18;
   items.forEach((t, i) => {
     const x = M + (i % 2) * (cw + 0.4);
-    const y = 1.95 + Math.floor(i / 2) * (rh + gap);
+    const y = 1.88 + Math.floor(i / 2) * (rh + gap);
     const c = i < 4 ? RED : NAVY;
     card(s, x, y, cw, rh, c);
     badge(s, x + 0.26, y + 0.22, 0.54, String(i + 1), c);
@@ -464,7 +466,7 @@ function badge(slide, x, y, d, label, color) {
     });
   });
 
-  caption(s, "※ Amazon 랭킹은 접속 시점 · 지역 · 계정 · 재고에 따라 변동됩니다. 내부 보고 시 반드시 캡처 일시를 함께 기재하십시오.");
+  caption(s, `※ 본 자료의 데이터 기준일은 ${ASOF} (금일 조회 기준)입니다. Amazon 랭킹은 접속 시점 · 지역 · 계정 · 재고에 따라 변동되므로, 재인용 시 조회 일시를 반드시 함께 기재하십시오.`);
   pageNum(s, 9);
   s.addNotes("실행은 세 가지입니다. 랭킹 정기 캡처 체계화, 교차 상위 SKU 리스트업, 미니·백참 라인 선행 기획 착수.");
 }
