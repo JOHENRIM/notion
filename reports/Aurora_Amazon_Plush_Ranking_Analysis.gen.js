@@ -30,7 +30,7 @@ function pageTitle(slide, text, kicker) {
   });
 }
 
-const ASOF = "2026. 09. 30.";
+const ASOF = "2026. 10. 05.";
 
 function pageNum(slide, n) {
   slide.addText(`${ASOF} 기준   |   ${n}`, {
